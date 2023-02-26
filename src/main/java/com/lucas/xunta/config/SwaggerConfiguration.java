@@ -54,8 +54,8 @@ public class SwaggerConfiguration {
         return (new ApiInfoBuilder()).title(apiTitle)
                 .description(description)
                 .version(version)
-                .termsOfServiceUrl("https://xt.junengw.com")
-                .licenseUrl("https://xt.junengw.com").build();
+                .termsOfServiceUrl("http://xt.junengw.com")
+                .licenseUrl("http://xt.junengw.com").build();
     }
 
     private static ApiKey apiLang() {
