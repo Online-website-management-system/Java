@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lucas.xunta.user.dao.UserMapper">
+
+    <delete id="deleteUser">
+        DELETE u,co,ac FROM user u
+        LEFT JOIN collect co ON u.id = co.user_id
+        LEFT JOIN account ac ON co.id = ac.collect_id
+        WHERE u.id = #{userId}
+    </delete>
+
+
+</mapper>

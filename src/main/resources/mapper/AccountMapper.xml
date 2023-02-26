@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lucas.xunta.account.dao.AccountMapper">
+
+    <select id="getAccountForCollectId" parameterType="java.lang.Long"
+            resultType="com.lucas.xunta.account.entity.Account">
+        SELECT ac.* FROM account ac
+        LEFT JOIN collect co ON ac.collect_id = co.id
+        WHERE ac.collect_id = #{collectId}
+        AND co.user_id = #{userId}
+    </select>
+
+    <update id="updateAccount">
+        UPDATE account ac
+        LEFT JOIN collect co ON ac.collect_id = co.id
+        SET ac.username = #{account.username},ac.password = #{account.password}
+        WHERE ac.id = #{account.id} AND co.user_id = #{userId}
+    </update>
+
+
+</mapper>
