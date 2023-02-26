@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lucas.xunta.category.dao.CategoryMapper">
+
+    <insert id="insertCategory" parameterType="com.lucas.xunta.category.controller.param.CategorySaveParam"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO category
+        (category_id,name,rank)
+        VALUES
+        (#{param.categoryId},#{param.name},#{param.rank})
+    </insert>
+
+    <update id="updateCategory" parameterType="com.lucas.xunta.category.controller.param.CategorySaveParam">
+        UPDATE category
+        SET
+        category_id = #{param.categoryId},
+        name = #{param.name},
+        rank = #{param.rank}
+        WHERE id = #{param.id}
+    </update>
+
+    <select id="listById" parameterType="Long" resultType="Long">
+        SELECT id FROM category where category_id = #{categoryId} and rank = "son"
+    </select>
+
+    <select id="listByIdAndParentName" resultType="com.lucas.xunta.category.entity.Category">
+        SELECT
+        id,
+        CONCAT(#{parentName}, IF(name IS NULL, "", name)) AS name,
+        sort
+        FROM category
+        WHERE category_id = #{categoryId} AND rank = "son"
+        ORDER BY sort ASC,id ASC
+    </select>
+
+    <update id="updateCategorySort" parameterType="com.lucas.xunta.category.controller.param.CategorySaveSortParam">
+        UPDATE category SET
+        sort = CASE id
+        <foreach collection="list" item="item">
+            WHEN #{item.id} THEN #{item.sort}
+        </foreach>
+        END
+        WHERE id IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+</mapper>

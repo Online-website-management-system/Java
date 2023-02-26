@@ -1,0 +1,139 @@
+server:
+  #端口
+  port: 8888
+  tomcat:
+    #最大连接数
+    max-connections: 2000
+    #tomcat起动的最大线程数，即同时处理的任务个数
+    max-threads: 2000
+    #当tomcat起动的线程数达到最大时，接受排队的请求个数，和max-threads一致
+    accept-count: 2000
+    #最小空闲线程
+    min-spare-threads: 0
+    #后台线程方法的Delay大小:
+    background-processor-delay: 30s
+  connection-timeout: 10000ms
+
+spring:
+  application:
+    name: xunta
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # JDBC 配置
+      url: jdbc:mysql://127.0.0.1:3306/xunta?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      #数据库密码加密的公钥
+      #publickey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKS3smae92cqKG010PyVvQSTiAV6bIuV8CI52r3t6Y1/f4ux9HQZIrQuhgodRNyXvBErLuNukJauo69OsjHhZU0CAwEAAQ==
+      #数据库密码加密，key=公钥，password=加密后的密码（加密方式未明）
+      #connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.druid.publickey};password=${spring.datasource.druid.password}
+      #要使用druidconfig的自动配置需要加上filter.config.enabled: true
+      filter:
+        config:
+          enabled: true
+      # 连接池配置
+      max-active: 2 #连接池最大使用连接数量
+      initial-size: 1 #初始化连接大小
+      max-wait: 60000 #获取连接最大等待时间
+      min-idle: 1 # 连接池最小空闲
+      pool-prepared-statements: false #连接池可以缓存PreparedStatement（PSCache），本质上就是缓存游标mysql不建议打开
+      max-pool-prepared-statement-per-connection-size: 20 #指定每个连接上PSCache的大小
+      time-between-eviction-runs-millis: 60000 #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      min-evictable-idle-time-millis: 300000 #配置一个连接在池中最小生存的时间，单位是毫秒
+      validation-query: select 1 #validationQuery是用来验证数据库连接的查询语句，这个查询语句必须是至少返回一条数据的SELECT语句
+      test-while-idle: true #如果为true（默认true），当应用向连接池申请连接，并且testOnBorrow为false时，连接池将会判断连接是否处于空闲状态，如果是，则验证这条连接是否可用。
+      test-on-borrow: false #当该属性为true时，在调用borrowObject方法返回连接前，会调用validated方法进行校验。若校验失败，连接会从连接池中移除并销毁。同时会尝试重新借一个新的连接对象。
+      #①.若testOnReturn属性设置为true，归还连接时，会进行检查，检查不通过，销毁。
+      #②.检查是通过PooledObjectFactory接口的validateObject方法完成。Jedis客户端，提供JedisFactory对象，用于校验。若ping不通，则校验失败。
+      test-on-return: false
+      login-username: root
+      login-password: root
+
+mybatis-plus:
+  #  config-location: classpath:mybatis-config.xml
+  # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.lucas.xunta.**.entity
+  configuration:
+    #该配置项就是指将带有下划线的表字段映射为驼峰格式的实体类属性
+    map-underscore-to-camel-case: true
+    # 如果配置为org.apache.ibatis.logging.stdout.StdOutImpl就只会在控制台窗口打印，不会记录到日志文件。
+    # 如果需要保存打印的SQL到文件就不能设置为StdOutImpl，可以设置为Slf4jImpl，也可以不设置。
+    # 然后对应接口所在包设置logback对应包的日志等级 日志配置如下
+    # logging:
+    #  level:
+    #    com.XXX: debug
+    #    org.springframework: warn
+    #    org.apache.ibatis.logging: debug
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#swagger 是否开启
+swagger:
+  enabled: true
+
+logging:
+  level:
+    root: info
+
+jwt:
+  token: Authorization
+  secret: xunta
+  #token有效期一天
+  expiration: 86400000
+  #token有效期是否校验,false为永不过期
+  expiration-status: false
+  #无需认证的资源
+  #/setting/info 系统设置信息网站Title标题等
+  #/slideshow/list 轮播图
+  #/category/parent_list/domain?domain=' + domain	/category/parent_list/domain 首页一级分类
+  #/category/son_collect_list/domain?categoryId=' + categoryId + '&domain=' + domain	/category/son_collect_list/domain 首页子级分类
+  #/category/search?keyword=' + keyword + '&domain=' + domain	/category/search 首页搜索
+  #/collect/' + collectId + '/visit	/collect/**/visit 收藏访问次数+1
+  #/captcha/' + phone + '/send_sms	/captcha/**/send_sms 发送短信验证码
+  #/user/login 用户登录
+  #/user/registry 用户注册
+  #/user/phone_login 用户手机登录
+  #/user/' + type + '/qq_login_url	/user/**/qq_login_url 获取qq登录链接
+  #/user/qq_login qq登录
+  #/user/title?domain=' + domain	/user/title 获取用户标题
+  antMatchers: /setting/info;/slideshow/list;/category/parent_list/domain;/category/son_collect_list/domain;/category/search;/collect/**/visit;/captcha/**/send_sms;/user/login;/user/registry;/user/phone_login;/user/**/qq_login_url;/user/qq_login;/user/title;/druid/**;/swagger/**;/swagger-resources/configuration/security;/webjars/**;/swagger-resources/**;/v2/api-docs;/**/*.html;/exception/**;/lombok;/api/**;/jpa/**;/swagger-ui.html;/files/**;/file/**
+
+#代理
+proxy:
+  hostname:
+  port:
+  username:
+  password:
+
+
+xunta:
+  login:
+    qq:
+      #获取qq登录网址
+      login-url: http://127.0.0.1/connect.php?appid={0}&appkey={1}&type={2}&act=login&redirect_uri={3}
+      #回调验证qq登录返回信息
+      callback-url: http://127.0.0.1/connect.php?appid={0}&appkey={1}&type={2}&act=callback&code={3}
+      #qq登录接口配置信息
+      signature:
+        appid: 000000
+        appkey: 000000
+        type: qq
+        #QQ登录回调地址
+        login-redirect-url: http://127.0.0.1/index/login
+        #QQ绑定回调地址
+        binding-redirect-url: http://127.0.0.1/index/setting
+  captcha:
+    #短信签名内容
+    sign-name: 短信签名内容
+    #验证码模板ID
+    template-id: 000000
+    #发送验证码
+    send-url: http://127.0.0.1/
+    #验证验证码
+    verify-url: http://127.0.0.1/
+  file:
+    #文件上传地址
+    upload-url: http://127.0.0.1/

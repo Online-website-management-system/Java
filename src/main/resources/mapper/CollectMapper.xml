@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lucas.xunta.collect.dao.CollectMapper">
+
+    <insert id="insertCollect" parameterType="com.lucas.xunta.collect.controller.param.CollectSaveParam"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO collect
+        (
+        user_id,
+        category_id,
+        url,
+        <if test="param.title != null and param.title != ''">title,</if>
+        <if test="param.logo != null and param.logo != ''">logo,</if>
+        <if test="param.introduce != null and param.introduce != ''">introduce,</if>
+        home
+        )
+        VALUES
+        (
+        #{param.userId},
+        #{param.categoryId},
+        #{param.url},
+        <if test="param.title != null and param.title != ''">#{param.title},</if>
+        <if test="param.logo != null and param.logo != ''">#{param.logo},</if>
+        <if test="param.introduce != null and param.introduce != ''">#{param.introduce},</if>
+        #{param.home}
+        )
+    </insert>
+
+    <update id="updateCollect" parameterType="com.lucas.xunta.collect.controller.param.CollectSaveParam">
+        UPDATE collect SET
+        user_id = #{param.userId},
+        url = #{param.url},
+        <if test="param.title != null and param.title != ''">title = #{param.title},</if>
+        <if test="param.logo != null and param.logo != ''">logo = #{param.logo},</if>
+        <if test="param.introduce != null and param.introduce != ''">introduce = #{param.introduce},</if>
+        <if test="param.home != null">home = #{param.home},</if>
+        category_id = #{param.categoryId}
+        WHERE 1 = 1 AND id = #{param.id}
+    </update>
+
+    <delete id="removeForCategoryId" parameterType="Long">
+        DELETE collect,account FROM collect
+        LEFT JOIN account
+        ON collect.id = account.collect_id
+        WHERE collect.category_id in
+        <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="updateForCategoryId" parameterType="Long">
+        update collect set category_id = 0,home = 1
+        where category_id in
+        <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="addVisit" parameterType="Long">
+        update collect set visit = visit + 1
+        where id = #{collectId}
+    </update>
+
+
+    <delete id="removeForCollectIdAndUserId" parameterType="Long">
+        DELETE collect,account FROM collect
+        LEFT JOIN account
+        ON collect.id = account.collect_id
+        WHERE collect.user_id = #{userId}
+        AND collect.id = #{collectId}
+    </delete>
+
+    <update id="updateCollectSort" parameterType="com.lucas.xunta.collect.controller.param.CollectSaveSortParam">
+        UPDATE collect SET
+        sort = CASE id
+        <foreach collection="list" item="item">
+            WHEN #{item.id} THEN #{item.sort}
+        </foreach>
+        END
+        WHERE user_id = #{userId}
+        AND id IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+</mapper>
