@@ -1,39 +1,25 @@
-# 寻它网址导航模块
+# 在线网址导航
+演示地址：https://xt.junengw.com，电脑端没写直接用iframe了所以手机才能QQ登录。
 
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+浏览器保存的书签存在软件、设备限制，一旦更换浏览器软件或者设备后无法保证书签数据实时同步，在线的网址导航系统可以在任何设备任何浏览器随时打开直接使用以前收藏过的网址书签。
 
 #### 软件架构
-软件架构说明
+JDK8、SpringBoot、node14、Vue、MySQL5.7
 
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  开发工具：IDEA，WebStorm
+2.  前后端项目名都是：xunta
+2.  后端：拉项目》导包》改配置》运行
+3.  前端：拉项目》npm i》运行，后端接口地址：src/api/config.js
+4.  有啥文件位置不知道用全局搜索或者顺着流程往下找就行了
 
-#### 使用说明
+#### 几张图片
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+![img.png](img.png)
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
