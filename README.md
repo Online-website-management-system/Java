@@ -1,5 +1,5 @@
 # 在线网址导航
-演示地址：https://xt.junengw.com
+演示地址：http://xt.junengw.com
 电脑端没写直接用iframe了所以手机才能QQ登录。
 
 #### 介绍
